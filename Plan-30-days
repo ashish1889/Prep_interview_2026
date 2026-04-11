@@ -1,0 +1,145 @@
+30-Day Detailed Plan (2 hrs/day)
+🔹 Week 1 (Days 1–7): C++ Core (High Priority)
+Day 1–2: Memory Management
+Stack vs Heap
+Smart pointers (unique_ptr, shared_ptr, weak_ptr)
+RAII, Rule of 5
+Fragmentation
+👉 Practice:
+Implement your own shared_ptr (basic version)
+Day 3–5: Multithreading (CRITICAL)
+Threads, mutex, condition_variable
+Deadlocks, race conditions
+Thread pools
+Futures/promises
+👉 Practice:
+Producer-Consumer problem
+Thread-safe queue
+Day 6–7: Templates
+Function + class templates
+Variadic templates
+SFINAE (basic idea)
+STL internals (vector/map overview)
+👉 Practice:
+Generic container or function
+🔹 Week 2 (Days 8–14): System Programming
+Day 8–9: System Calls + OS Basics
+What is syscall
+Context switching
+User vs kernel space
+Example:
+open(), read(), write()
+
+Day 10–11: Driver + Interrupts (Important for your profile)
+Interrupt handling flow
+Polling vs interrupt
+Basics of Linux device drivers
+/dev, udev
+👉 Focus on:
+How Android HAL interacts with kernel
+Day 12–14: Device Config + Debugging
+Device tree basics
+Memory mapping (mmap)
+Debugging tools (strace, ltrace)
+👉 Practice:
+Trace a simple program using strace
+
+Week 3 (Days 15–21): Distributed Systems + Project
+Day 15–16: Fundamentals
+CAP theorem
+Consistency models
+Load balancing
+Caching
+Day 17–18: Microservices Architecture
+Service-to-service communication:
+REST
+gRPC
+Message queues (Kafka basics)
+Authentication:
+JWT
+OAuth basics
+
+Day 19–21: Build a Mini Project (VERY IMPORTANT)
+👉 Build this:
+“Vehicle Telemetry Microservice System” (aligns with your ECU background)
+Components:
+Service 1: Data ingestion (Python/FastAPI)
+Service 2: Processing (C++ or Python)
+Service 3: Auth (JWT)
+Communication: REST/gRPC
+👉 Be ready to explain:
+Scaling strategy
+Failure handling
+Retry mechanisms
+
+Week 4 (Days 22–26): Cloud + Networking
+Day 22–23: AWS/Azure Basics
+Compute (EC2 / VM)
+Storage (S3 / Blob)
+Load balancer
+IAM (VERY IMPORTANT)
+👉 Focus:
+How your microservices deploy on cloud
+Day 24–26: Networking Fundamentals
+TCP vs UDP
+3-way handshake
+HTTPS (TLS basics)
+VPN concept
+👉 Must know:
+How a request flows from client → server
+
+Final Days (Day 27–30): Mock + Polish
+Day 27–28: System Design Practice
+Design:
+Rate limiter
+Logging system
+Notification system
+👉 Speak out loud like interview
+
+Day 29: Behavioral + Staff Level Focus
+Prepare stories:
+Leading a project
+Handling ambiguity
+Scaling systems
+Debugging production issues
+Day 30: Full Mock Interview
+1 coding (C++ multithreading)
+1 system design
+1 deep dive (your project)
+🧩 Daily 2-Hour Structure
+Use this EVERY day:
+45 min → Learn concept
+45 min → Code / design
+30 min → Explain aloud (VERY IMPORTANT)
+
+What Interviewers Will Look For (Staff Level)
+They don’t care if you “know everything”. They care if you can:
+1. Go Deep
+“How does mutex work internally?”
+“What happens in kernel on syscall?”
+2. Design Tradeoffs
+Why REST vs gRPC?
+Why eventual consistency?
+3. Ownership Thinking
+Scaling
+Failure handling
+Monitoring
+⚠️ Common Mistakes (Avoid These)
+❌ Only watching tutorials (no coding)
+❌ Ignoring system design depth
+❌ Not practicing explanation
+❌ Shallow cloud knowledge
+
+Bonus (If Extra Time)
+Read:
+“Designing Data-Intensive Applications”
+Practice:
+LeetCode medium (multithreading + STL-heavy)
+
+👍 Final Advice
+Given your Android ECU + system-level background, your strongest angle is:
+👉 “Low-level + distributed systems bridge”
+Lean into:
+HAL ↔ kernel ↔ cloud pipeline
+Real-world debugging stories
+
