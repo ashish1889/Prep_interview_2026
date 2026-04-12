@@ -1,0 +1,170 @@
+Explain stack vs heap memory. When would you prefer one over the other? What are the trade-offs?
+
+Strong Staff-Level Answer
+High-level:
+Stack → automatic, LIFO, fast allocation/deallocation
+Heap → dynamic, flexible, slower, managed manually (or via allocators)
+
+Key Differences
+Aspect	                                Stack	                                                     Heap
+Allocation	                      Compile-time / function call	                                   Runtime
+Speed	                                 Very fast	                                                 Slower
+Size	                                 Limited	                                                   Large
+Lifetime	                            Scope-based	                                                 Controlled manually
+Fragmentation	                          No	                                                        Yes
+
+
+When to Use
+Use stack:
+Small, short-lived objects
+Deterministic lifetime
+Performance-critical paths
+Use heap:
+Large objects
+Dynamic size
+Shared ownership
+
+🔹 Staff-Level Insight (Important)
+“In high-performance systems, I default to stack allocation unless there is a clear need for heap—because 
+heap introduces fragmentation, cache misses, and allocator contention.”
+
+
+🔥 Follow-up Questions
+Q: What happens on stack overflow?
+→ Program crashes (segmentation fault)
+Q: Why is stack faster?
+→ Simple pointer increment/decrement (no bookkeeping)
+Q: How does heap affect cache locality?
+→ Poor locality → more cache misses → slower
+
+🧠 1. Stack vs Heap — Deep Grilling
+
+❓ Q1
+If stack is faster, why don’t we just allocate everything on the stack?
+✅ Answer
+Stack size is limited (typically a few MB per thread)
+No support for dynamic lifetime (objects tied to scope)
+Cannot return references to stack memory safely
+Deep recursion risks stack overflow
+👉 Staff insight:
+“Stack is ideal for deterministic lifetimes, but heap is necessary for dynamic and cross-scope ownership.”
+🔥 What they test
+Practical constraints, not theory
+
+
+❓ Q2
+How does stack allocation work at assembly level?
+✅ Answer
+Stack pointer (rsp in x86_64) moves
+Allocation = decrement rsp
+Deallocation = increment rsp
+👉 Example:
+sub rsp, 32   ; allocate
+add rsp, 32   ; deallocate
+👉 No fragmentation, no metadata
+
+🔥 What they test
+Low-level understanding (system engineer expectation)
+❓ Q3
+Can heap allocation ever be faster than stack?
+✅ Answer
+Yes, in some cases:
+Custom allocators (memory pools, slab allocators)
+Reusing memory → avoids repeated allocation cost
+Thread-local allocators reduce contention
+👉 Example:
+High-performance servers use memory pools instead of stack
+🔥 What they test
+Ability to break assumptions
+
+
+===========================================================================================================================
+
+🧠 2. Smart Pointers (VERY HIGH PRIORITY)
+❓ Question
+Explain unique_ptr, shared_ptr, and weak_ptr. When would you use each?
+✅ Strong Answer
+🔹 std::unique_ptr
+Exclusive ownership
+Cannot be copied, only moved
+std::unique_ptr<int> p = std::make_unique<int>(10);
+👉 Use when:
+Single owner
+Avoid overhead
+
+🔹 std::shared_ptr
+Shared ownership via reference counting
+std::shared_ptr<int> p1 = std::make_shared<int>(10);
+auto p2 = p1;
+👉 Use when:
+Multiple owners
+Lifetime is shared
+🔹 std::weak_ptr
+Non-owning reference to shared_ptr
+Prevents cyclic dependency
+std::weak_ptr<int> wp = p1;
+
+🔥 Staff-Level Insight (CRUCIAL)
+“shared_ptr introduces atomic reference counting overhead, so in performance-critical systems, I avoid it unless ownership is truly shared.”
+❓ Follow-up (VERY COMMON)
+What is cyclic reference problem?
+✅ Answer
+Two shared_ptrs referencing each other → ref count never reaches 0 → memory leak
+Fix:
+Use weak_ptr in one direction
+
+❓ Deep Question
+How is shared_ptr implemented internally?
+✅ Answer
+Control block contains:
+Reference count
+Deleter
+Uses atomic operations for thread safety
+
+🧠 2. Smart Pointers — Deep Grilling
+❓ Q4
+Why is make_shared preferred over shared_ptr(new T)?
+✅ Answer
+Single allocation for:
+Object
+Control block
+Better cache locality
+Fewer allocations → faster
+⚠️ Edge Case (IMPORTANT)
+Cannot control custom deleter easily
+May delay deallocation if weak_ptr exists
+
+🔥 What they test
+Optimization awareness
+❓ Q5
+What happens if two threads modify a shared_ptr?
+✅ Answer
+Reference count updates are thread-safe (atomic)
+But object access is NOT thread-safe
+👉 Important distinction:
+“shared_ptr ensures safe ownership, not safe data access.”
+🔥 What they test
+Concurrency clarity
+
+❓ Q6
+Can shared_ptr cause performance issues?
+✅ Answer
+Yes:
+Atomic ref count → expensive in multithreaded systems
+False sharing on control block
+Frequent increments/decrements
+👉 Staff insight:
+“In hot paths, I avoid shared_ptr and use unique ownership or object pools.”
+🔥 What they test
+Real-world performance thinking
+
+❓ Q7 (Very Hard)
+How would you implement a thread-safe reference counter without atomic?
+✅ Answer
+Use:
+Thread-local counters + merge
+External synchronization (mutex)
+👉 But:
+“Without atomics, correctness becomes complex and error-prone.”
+🔥 What they test
+Systems design thinking
